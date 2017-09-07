@@ -152,6 +152,7 @@ public:
 
     void OnDestroy(HWND hwnd)
     {
+        KillTimer(hwnd, TIMER_ID);
         PostQuitMessage(0);
     }
 
