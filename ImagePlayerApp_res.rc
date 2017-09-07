@@ -1,0 +1,75 @@
+#include "targetver.h"
+#include <windows.h>
+#include <dlgs.h>
+#include "resource.h"
+
+/////////////////////////////////////////////////////////////////////////////
+// Encoding
+
+#pragma code_page(65001)    // UTF-8
+
+/////////////////////////////////////////////////////////////////////////////
+// Icon
+
+1 ICON "ImagePlayerApp.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+// Version Info
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION     0, 0, 0, 0
+PRODUCTVERSION  0, 0, 0, 0
+FILEOS          VOS_NT_WINDOWS32
+FILETYPE        VFT_APP
+BEGIN
+    // English (U.S.)
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904E4"
+        BEGIN
+            VALUE "CompanyName", "@PROGRAM_AUTHORS\0"
+            VALUE "FileDescription", "ImagePlayerApp\0"
+            VALUE "FileVersion", "0.0.0\0"
+            VALUE "LegalCopyright", "Copyright (C) 2017 Katayama Hirofumi MZ\0"
+            VALUE "ProductName", "ImagePlayerApp\0"
+            VALUE "ProductVersion", "0.0.0\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        // English (U.S.)
+        VALUE "Translation", 0x0409, 0x04E4
+    END
+END
+
+/////////////////////////////////////////////////////////////////////////////
+// Menu
+
+// English (U.S.)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+
+1 MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "E&xit",                   CMDID_EXIT
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About...",               CMDID_ABOUT
+    END
+END
+
+/////////////////////////////////////////////////////////////////////////////
+// String Table
+
+// English (U.S.)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+
+STRINGTABLE
+BEGIN
+    IDS_APPNAME,    "ImagePlayerApp"
+    IDS_VERSION,    "ImagePlayerApp ver.0.0 by katahiromz"
+END
+
+/////////////////////////////////////////////////////////////////////////////
