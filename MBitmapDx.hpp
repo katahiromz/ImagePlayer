@@ -293,16 +293,16 @@ inline BOOL MBitmapDx::Step(DWORD& dwDelay)
     if (m_nFrameIndex + 1 < m_nFrameCount)
     {
         dwDelay = GetFrameDelay(m_nFrameIndex);
-        ++m_nFrameIndex;
         SetFrameIndex(m_nFrameIndex);
+        ++m_nFrameIndex;
         return TRUE;
     }
 
     if (m_nLoopCount == 0 || m_nLoopIndex < m_nLoopCount)
     {
         dwDelay = GetFrameDelay(m_nFrameIndex);
-        m_nFrameIndex = 0;
         SetFrameIndex(m_nFrameIndex);
+        m_nFrameIndex = 0;
         ++m_nLoopIndex;
         return TRUE;
     }
