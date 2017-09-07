@@ -47,7 +47,7 @@ public:
         KillTimer(hwnd, TIMER_ID);
 
         using namespace Gdiplus;
-        MStringW strTextW = MTextToWide(pszFile);
+        MStringW strTextW = MTextToWide(pszFile).c_str();
         Bitmap *pBitmap = Bitmap::FromFile(strTextW.c_str());
         BOOL bOK = m_bitmap.SetBitmap(pBitmap);
         if (bOK)

@@ -50,7 +50,7 @@ else()
 endif()
 
 # link
-target_link_libraries(ImagePlayerApp comctl32)
+target_link_libraries(ImagePlayerApp comctl32 gdiplus)
 
 ##############################################################################
 
@@ -84,8 +84,5 @@ if(1)
         string(REPLACE "/MD" "/MT" ${CompilerFlags} "${${CompilerFlags}}")
     endforeach()
 endif()
-
-# install the program
-install(TARGETS ImagePlayerApp DESTINATION bin)
 
 ##############################################################################

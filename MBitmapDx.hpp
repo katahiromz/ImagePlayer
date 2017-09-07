@@ -256,7 +256,7 @@ inline HBITMAP MBitmapDx::GetHBITMAP(LONG& cx, LONG& cy)
         DeleteObject(hbr);
 
         Gdiplus::Graphics g(hDC);
-        g.DrawImage(m_pBitmap, 0, 0);
+        g.DrawImage(m_pBitmap, 0, 0, (INT)cx, (INT)cy);
     }
     SelectObject(hDC, hbmOld);
     DeleteDC(hDC);
