@@ -6,6 +6,11 @@
 #include "MTextToText.hpp"
 #include "MBitmapDx.hpp"
 
+#ifndef _INC_VFW
+    #include <vfw.h>
+#endif
+#pragma comment (lib, "vfw32.lib")
+
 #define TIMER_ID    999
 
 //////////////////////////////////////////////////////////////////////////////
@@ -17,6 +22,7 @@ protected:
     HICON       m_hIcon;
     TCHAR       m_szFile[MAX_PATH];
     MBitmapDx   m_bitmap;
+    HWND        m_mci_window;
 
 public:
     MImagePlayerApp(HINSTANCE hInst) : m_hInst(hInst)
@@ -45,14 +51,30 @@ public:
     BOOL DoLoadFile(HWND hwnd, LPCTSTR pszFile)
     {
         KillTimer(hwnd, TIMER_ID);
+        MCIWndStop(m_mci_window);
+        MCIWndClose(m_mci_window);
 
         using namespace Gdiplus;
         MStringW strTextW = MTextToWide(pszFile).c_str();
         Bitmap *pBitmap = Bitmap::FromFile(strTextW.c_str());
-        BOOL bOK = m_bitmap.SetBitmap(pBitmap);
+        BOOL bOK = (pBitmap->GetFrameDimensionsCount() > 0);
         if (bOK)
         {
+            m_bitmap.SetBitmap(pBitmap);
+            ShowWindow(m_mci_window, SW_HIDE);
             SetTimer(hwnd, TIMER_ID, 0, NULL);
+        }
+        else
+        {
+            delete pBitmap;
+            m_bitmap.SetBitmap(NULL);
+            if (!IsWindowVisible(m_mci_window))
+                ShowWindow(m_mci_window, SW_SHOWNOACTIVATE);
+            MCIWndOpen(m_mci_window, pszFile, 0);
+            MCIWndPlay(m_mci_window);
+
+            HWND hwndTB = FindWindowEx(m_mci_window, NULL, TRACKBAR_CLASS, NULL);
+            InvalidateRect(hwndTB, NULL, TRUE);
         }
         InvalidateRect(hwnd, NULL, TRUE);
         return bOK;
@@ -60,6 +82,12 @@ public:
 
     BOOL OnCreate(HWND hwnd, LPCREATESTRUCT lpCreateStruct)
     {
+        DWORD style = WS_CHILD | WS_BORDER | MCIWNDF_NOMENU |
+                      MCIWNDF_NOAUTOSIZEWINDOW;
+        m_mci_window = MCIWndCreate(hwnd, m_hInst, style, NULL);
+        if (m_mci_window == NULL)
+            return FALSE;
+
         DragAcceptFiles(hwnd, TRUE);
         return TRUE;
     }
@@ -134,6 +162,11 @@ public:
         }
     }
 
+    void OnSize(HWND hwnd, UINT state, int cx, int cy)
+    {
+        MoveWindow(m_mci_window, 0, 0, cx, cy, TRUE);
+    }
+
     virtual LRESULT CALLBACK
     WindowProcDx(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
@@ -145,6 +178,7 @@ public:
         HANDLE_MSG(hwnd, WM_DROPFILES, OnDropFiles);
         HANDLE_MSG(hwnd, WM_PAINT, OnPaint);
         HANDLE_MSG(hwnd, WM_TIMER, OnTimer);
+        HANDLE_MSG(hwnd, WM_SIZE, OnSize);
         default:
             return DefaultProcDx();
         }
@@ -153,6 +187,8 @@ public:
     void OnDestroy(HWND hwnd)
     {
         KillTimer(hwnd, TIMER_ID);
+        MCIWndStop(m_mci_window);
+        MCIWndClose(m_mci_window);
         PostQuitMessage(0);
     }
 

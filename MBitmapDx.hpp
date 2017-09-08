@@ -159,7 +159,7 @@ inline void MBitmapDx::SetBackColor(COLORREF rgbBack)
 inline BOOL MBitmapDx::SetBitmap(Gdiplus::Bitmap *pBitmap)
 {
     using namespace Gdiplus;
-    FreeBitmap();
+    Destroy();
 
     m_pBitmap = pBitmap;
     if (pBitmap == NULL)
@@ -167,14 +167,16 @@ inline BOOL MBitmapDx::SetBitmap(Gdiplus::Bitmap *pBitmap)
 
     UINT nDimCount = m_pBitmap->GetFrameDimensionsCount();
 
-    std::vector<GUID> dims(nDimCount);
-    m_pBitmap->GetFrameDimensionsList(&dims[0], nDimCount);
-    m_nFrameCount = m_pBitmap->GetFrameCount(&dims[0]);
-
-    FreeDelayPropertyItem();
+	if (nDimCount)
+	{
+		std::vector<GUID> dims(nDimCount);
+		m_pBitmap->GetFrameDimensionsList(&dims[0], nDimCount);
+		m_nFrameCount = m_pBitmap->GetFrameCount(&dims[0]);
+	}
 
     UINT cbItem;
 
+    FreeDelayPropertyItem();
     cbItem = m_pBitmap->GetPropertyItemSize(PropertyTagFrameDelay);
     if (cbItem)
     {

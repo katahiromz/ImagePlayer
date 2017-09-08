@@ -9,8 +9,11 @@ RC = brc32
 CXXFLAGS = -W -WU -DUNICODE=1 -D_UNICODE=1
 RCFLAGS = 
 
-OBJECTS = \
+OBJS = \
 	build\ImagePlayerApp$(DOTOBJ)
+
+LIBS = \
+	-lvfw32
 
 HEADERS = \
 	MBitmapDx.hpp \
@@ -24,8 +27,8 @@ all: build\ImagePlayerApp$(DOTEXE)
 build:
 	if not exist build mkdir build
 
-build\ImagePlayerApp$(DOTEXE): $(OBJECTS) build\ImagePlayerApp_res.res
-	$(CXX) $(CXXFLAGS) -ebuild\ImagePlayerApp$(DOTEXE) $(OBJECTS)
+build\ImagePlayerApp$(DOTEXE): $(OBJS) build\ImagePlayerApp_res.res
+	$(CXX) $(CXXFLAGS) -ebuild\ImagePlayerApp$(DOTEXE) $(OBJS) $(LIBS)
 	$(RC) $(RCFLAGS) build\ImagePlayerApp_res.res build\ImagePlayerApp$(DOTEXE)
 
 build\ImagePlayerApp$(DOTOBJ): build $(HEADERS) ImagePlayerApp.cpp

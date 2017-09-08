@@ -50,7 +50,7 @@ else()
 endif()
 
 # link
-target_link_libraries(ImagePlayerApp comctl32 gdiplus)
+target_link_libraries(ImagePlayerApp comctl32 gdiplus vfw32)
 
 ##############################################################################
 
