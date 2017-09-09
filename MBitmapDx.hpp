@@ -167,12 +167,12 @@ inline BOOL MBitmapDx::SetBitmap(Gdiplus::Bitmap *pBitmap)
 
     UINT nDimCount = m_pBitmap->GetFrameDimensionsCount();
 
-	if (nDimCount)
-	{
-		std::vector<GUID> dims(nDimCount);
-		m_pBitmap->GetFrameDimensionsList(&dims[0], nDimCount);
-		m_nFrameCount = m_pBitmap->GetFrameCount(&dims[0]);
-	}
+    if (nDimCount)
+    {
+        std::vector<GUID> dims(nDimCount);
+        m_pBitmap->GetFrameDimensionsList(&dims[0], nDimCount);
+        m_nFrameCount = m_pBitmap->GetFrameCount(&dims[0]);
+    }
 
     UINT cbItem;
 
